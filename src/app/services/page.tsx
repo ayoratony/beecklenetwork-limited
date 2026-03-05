@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase, Service } from '@/lib/supabase'
 import { Loader2, ArrowRight, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 
 export default function ServicesPage() {
@@ -59,9 +60,15 @@ export default function ServicesPage() {
               className="bg-tech-midnight p-8 rounded-lg border border-white/10 hover:border-tech-neon-cyan/50 transition-all hover:-translate-y-2 group shadow-lg shadow-tech-neon-cyan/5"
             >
               <div className="mb-6 h-12 w-12 bg-tech-neon-cyan/10 rounded-lg flex items-center justify-center group-hover:bg-tech-neon-cyan/20 transition-colors">
-                {/* Fallback icon if no URL provided, or render image if URL exists */}
                 {service.icon_url ? (
-                  <img src={service.icon_url} alt={service.title} className="h-6 w-6" />
+                  <Image
+                    src={service.icon_url}
+                    alt={service.title}
+                    width={24}
+                    height={24}
+                    className="h-6 w-6"
+                    unoptimized
+                  />
                 ) : (
                   <div className="h-6 w-6 bg-tech-neon-cyan rounded-full opacity-50" />
                 )}

@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { supabase, Service } from '@/lib/supabase'
 import { Loader2, ArrowLeft, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 
 export default function ServiceDetailPage() {
@@ -80,7 +81,14 @@ export default function ServiceDetailPage() {
             
             {service.icon_url && (
               <div className="hidden md:flex h-32 w-32 bg-tech-midnight border border-white/10 rounded-2xl items-center justify-center shadow-lg shadow-tech-neon-cyan/5">
-                <img src={service.icon_url} alt={service.title} className="h-16 w-16" />
+                <Image
+                  src={service.icon_url}
+                  alt={service.title}
+                  width={64}
+                  height={64}
+                  className="h-16 w-16"
+                  unoptimized
+                />
               </div>
             )}
           </div>

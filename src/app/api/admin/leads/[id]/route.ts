@@ -35,10 +35,10 @@ const updateLeadSchema = z.object({
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   try {
-    const { id } = await params
+    const { id } = context.params
     // Check admin authentication
     const admin = await isAdmin(request)
     if (!admin) {
@@ -90,10 +90,10 @@ export async function PUT(
 // Get lead details
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: { id: string } }
 ) {
   try {
-    const { id } = await params
+    const { id } = context.params
     // Check admin authentication
     const admin = await isAdmin(request)
     if (!admin) {

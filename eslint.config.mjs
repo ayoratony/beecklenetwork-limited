@@ -8,7 +8,7 @@ const __dirname = dirname(__filename);
 const compat = new FlatCompat({ baseDirectory: __dirname });
 
 const eslintConfig = defineConfig([
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.extends("eslint-config-next/core-web-vitals.js", "eslint-config-next/typescript.js"),
   {
     rules: {
       "react-hooks/set-state-in-effect": "off"
