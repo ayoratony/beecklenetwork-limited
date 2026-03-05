@@ -35,9 +35,10 @@ const updateLeadSchema = z.object({
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     // Check admin authentication
     const admin = await isAdmin(request)
     if (!admin) {
@@ -56,7 +57,7 @@ export async function PUT(
         status: validatedData.status,
         ...(validatedData.notes && { notes: validatedData.notes })
       })
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
     
@@ -89,9 +90,10 @@ export async function PUT(
 // Get lead details
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     // Check admin authentication
     const admin = await isAdmin(request)
     if (!admin) {
@@ -104,7 +106,7 @@ export async function GET(
     const { data, error } = await supabaseAdmin
       .from('leads')
       .select('*')
-      .eq('id', params.id)
+      .eq('id', id)
       .single()
     
     if (error) {

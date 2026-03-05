@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Users, Briefcase, FileText, Layers, TrendingUp } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
@@ -14,11 +14,7 @@ export default function AdminDashboard() {
   })
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    fetchStats()
-  }, [])
-
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     setLoading(true)
     
     // Fetch counts in parallel
@@ -37,7 +33,11 @@ export default function AdminDashboard() {
     })
     
     setLoading(false)
-  }
+  }, [])
+
+  useEffect(() => {
+    fetchStats()
+  }, [fetchStats])
 
   return (
     <div className="space-y-6">

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Star, Quote } from 'lucide-react'
 import Image from 'next/image'
@@ -86,7 +86,7 @@ export default function TestimonialsPage() {
             Client <span className="holographic-text">Testimonials</span>
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-            Don't just take our word for it. Here's what our clients say about working with Beeckle Network.
+            Don&apos;t just take our word for it. Here&apos;s what our clients say about working with Beeckle Network.
           </p>
           <div className="flex justify-center space-x-2 mb-8">
             {[...Array(5)].map((_, i) => (
@@ -165,7 +165,7 @@ export default function TestimonialsPage() {
                 
                 <blockquote className="mb-4">
                   <p className="text-gray-300 text-sm italic leading-relaxed">
-                    "{testimonial.content}"
+                    &quot;{testimonial.content}&quot;
                   </p>
                 </blockquote>
                 

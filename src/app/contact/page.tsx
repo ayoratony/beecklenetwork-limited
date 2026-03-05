@@ -81,7 +81,7 @@ export default function ContactPage() {
             Get In <span className="holographic-text">Touch</span>
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-            Ready to transform your business? Let's discuss how our technology solutions can help you achieve your goals.
+            Ready to transform your business? Let&apos;s discuss how our technology solutions can help you achieve your goals.
           </p>
         </div>
       </section>
@@ -94,7 +94,7 @@ export default function ContactPage() {
               <CardHeader>
                 <CardTitle className="text-2xl text-white">Send us a message</CardTitle>
                 <CardDescription className="text-gray-300">
-                  Fill out the form below and we'll get back to you within 24 hours.
+                  Fill out the form below and we&apos;ll get back to you within 24 hours.
                 </CardDescription>
               </CardHeader>
               <CardContent>

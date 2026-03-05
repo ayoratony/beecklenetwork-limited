@@ -11,7 +11,7 @@ export default function AboutPage() {
   useEffect(() => {
     async function fetchInfo() {
       const { data } = await supabase.from('company_info').select('*').single()
-      setInfo(data)
+      setInfo(data as CompanyInfo | null)
       setLoading(false)
     }
     fetchInfo()

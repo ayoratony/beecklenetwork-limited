@@ -87,8 +87,8 @@ async function getServices() {
       return fallbackServices as Service[]
     }
     return data as Service[]
-  } catch (e) {
-    console.warn('Fetch error, using fallback data')
+  } catch (error) {
+    console.warn('Fetch error, using fallback data', error)
     return fallbackServices as Service[]
   }
 }
@@ -118,7 +118,7 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => {
+            {services.map((service) => {
               const Icon = iconMap[service.category] || Code
               const colorClass = colorMap[service.category] || 'text-tech-neon-cyan'
               
@@ -165,7 +165,7 @@ export default async function Home() {
             Ready to <span className="holographic-text">Transform</span> Your Business?
           </h2>
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto typing-effect w-fit mx-auto border-r-2 border-tech-neon-cyan pr-2">
-            Let's discuss how our technology solutions can help you achieve your business goals.
+            Let&apos;s discuss how our technology solutions can help you achieve your business goals.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
             <Button size="lg" className="bg-tech-neon-cyan text-tech-deep-space hover:bg-tech-electric-blue hover:neon-glow transition-all text-lg px-8 py-6 rounded-none clip-path-polygon relative overflow-hidden group">

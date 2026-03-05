@@ -37,6 +37,7 @@ export type Database = {
           category?: string
           created_at?: string
         }
+        Relationships: []
       }
       projects: {
         Row: {
@@ -78,6 +79,7 @@ export type Database = {
           featured?: boolean
           created_at?: string
         }
+        Relationships: []
       }
       blog_posts: {
         Row: {
@@ -116,6 +118,7 @@ export type Database = {
           cover_image?: string | null
           created_at?: string
         }
+        Relationships: []
       }
       testimonials: {
         Row: {
@@ -145,6 +148,7 @@ export type Database = {
           approved?: boolean
           created_at?: string
         }
+        Relationships: []
       }
       leads: {
         Row: {
@@ -155,6 +159,7 @@ export type Database = {
           service_interest: string
           message: string
           status: 'New' | 'Contacted' | 'Closed'
+          notes: string | null
           created_at: string
         }
         Insert: {
@@ -165,6 +170,7 @@ export type Database = {
           service_interest: string
           message: string
           status?: 'New' | 'Contacted' | 'Closed'
+          notes?: string | null
           created_at?: string
         }
         Update: {
@@ -175,8 +181,10 @@ export type Database = {
           service_interest?: string
           message?: string
           status?: 'New' | 'Contacted' | 'Closed'
+          notes?: string | null
           created_at?: string
         }
+        Relationships: []
       }
       company_info: {
         Row: {
@@ -193,7 +201,7 @@ export type Database = {
           contact_email: string | null
           contact_phone: string | null
           address: string | null
-          social_links: any | null
+          social_links: Record<string, string> | null
           office_hours: {
             monday_friday: string
             saturday: string
@@ -215,7 +223,7 @@ export type Database = {
           contact_email?: string | null
           contact_phone?: string | null
           address?: string | null
-          social_links?: any | null
+          social_links?: Record<string, string> | null
           office_hours?: {
             monday_friday: string
             saturday: string
@@ -237,7 +245,7 @@ export type Database = {
           contact_email?: string | null
           contact_phone?: string | null
           address?: string | null
-          social_links?: any | null
+          social_links?: Record<string, string> | null
           office_hours?: {
             monday_friday: string
             saturday: string
@@ -245,8 +253,13 @@ export type Database = {
           } | null
           updated_at?: string
         }
+        Relationships: []
       }
     }
+    Views: Record<string, never>
+    Functions: Record<string, never>
+    Enums: Record<string, never>
+    CompositeTypes: Record<string, never>
   }
 }
 

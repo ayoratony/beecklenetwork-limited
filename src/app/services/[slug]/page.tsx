@@ -26,7 +26,7 @@ export default function ServiceDetailPage() {
       if (error) {
         console.error('Error fetching service:', error)
       } else {
-        setService(data)
+        setService(data as Service | null)
       }
       setLoading(false)
     }

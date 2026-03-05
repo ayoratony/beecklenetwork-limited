@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { supabase, CompanyInfo } from '@/lib/supabase'
+import { useState, useEffect, useCallback } from 'react'
+import { supabase, CompanyInfo, type Database } from '@/lib/supabase'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -15,17 +15,13 @@ export default function SettingsPage() {
   const [tableMissing, setTableMissing] = useState(false)
 
   // Separate state for office hours to handle JSONB structure
-  const [officeHours, setOfficeHours] = useState({
+  const [officeHours, setOfficeHours] = useState<NonNullable<CompanyInfo['office_hours']>>({
     monday_friday: '9:00 AM - 6:00 PM',
     saturday: '10:00 AM - 4:00 PM',
     sunday: 'Closed'
   })
 
-  useEffect(() => {
-    fetchInfo()
-  }, [])
-
-  const fetchInfo = async () => {
+  const fetchInfo = useCallback(async () => {
     setIsLoading(true)
     const { data, error } = await supabase
       .from('company_info')
@@ -33,41 +29,50 @@ export default function SettingsPage() {
       .limit(1)
       .single()
 
+    const companyInfo = data as CompanyInfo | null
+
     if (error) {
       if (error.code === '42P01') {
         setTableMissing(true)
       } else if (error.code !== 'PGRST116') {
         console.error('Error fetching settings:', error)
       }
-    } else if (data) {
-      setInfo(data)
-      if (data.office_hours) {
-        // Safe cast as we know the structure
-        setOfficeHours(data.office_hours as any)
+    } else if (companyInfo) {
+      setInfo(companyInfo)
+      if (companyInfo.office_hours) {
+        setOfficeHours(companyInfo.office_hours)
       }
     }
     setIsLoading(false)
-  }
+  }, [])
+
+  useEffect(() => {
+    fetchInfo()
+  }, [fetchInfo])
 
   const handleSave = async () => {
     setIsSaving(true)
     
-    const updates = {
+    const updates: Database['public']['Tables']['company_info']['Update'] = {
       ...info,
       office_hours: officeHours,
       updated_at: new Date().toISOString()
     }
 
-    let result;
+    let result
     if (info.id) {
        result = await supabase
         .from('company_info')
-        .update(updates as any)
+        .update(updates)
         .eq('id', info.id)
     } else {
+       const insertData: Database['public']['Tables']['company_info']['Insert'] = {
+        ...updates,
+        about_content: updates.about_content ?? ''
+       }
        result = await supabase
         .from('company_info')
-        .insert(updates as any)
+        .insert(insertData)
     }
 
     const { error } = result

@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { supabase, CompanyInfo } from '@/lib/supabase'
+import { useState, useEffect, useCallback } from 'react'
+import { supabase, CompanyInfo, type Database } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -16,11 +16,7 @@ export default function AdminAboutPage() {
   const [valuesInput, setValuesInput] = useState('')
   const [tableMissing, setTableMissing] = useState(false)
 
-  useEffect(() => {
-    fetchInfo()
-  }, [])
-
-  const fetchInfo = async () => {
+  const fetchInfo = useCallback(async () => {
     setIsLoading(true)
     const { data, error } = await supabase
       .from('company_info')
@@ -28,23 +24,29 @@ export default function AdminAboutPage() {
       .limit(1)
       .single()
 
+    const companyInfo = data as CompanyInfo | null
+
     if (error) {
       if (error.code === '42P01') { // Table does not exist
         setTableMissing(true)
       } else if (error.code !== 'PGRST116') { // PGRST116 is "Row not found"
         console.error('Error fetching company info:', error)
       }
-    } else if (data) {
-      setInfo(data)
-      setValuesInput(data.values ? data.values.join(', ') : '')
+    } else if (companyInfo) {
+      setInfo(companyInfo)
+      setValuesInput(companyInfo.values ? companyInfo.values.join(', ') : '')
     }
     setIsLoading(false)
-  }
+  }, [])
+
+  useEffect(() => {
+    fetchInfo()
+  }, [fetchInfo])
 
   const handleSave = async () => {
     setIsSaving(true)
     
-    const updates = {
+    const updates: Database['public']['Tables']['company_info']['Update'] = {
       ...info,
       values: valuesInput.split(',').map(s => s.trim()).filter(Boolean),
       updated_at: new Date().toISOString()
@@ -55,16 +57,20 @@ export default function AdminAboutPage() {
     // If we have no ID, we let Supabase generate it.
     
     // Check if we have an ID, if not, it's a new insert
-    let result;
+    let result
     if (info.id) {
        result = await supabase
         .from('company_info')
-        .update(updates as any)
+        .update(updates)
         .eq('id', info.id)
     } else {
+       const insertData: Database['public']['Tables']['company_info']['Insert'] = {
+        ...updates,
+        about_content: updates.about_content ?? ''
+       }
        result = await supabase
         .from('company_info')
-        .insert(updates as any)
+        .insert(insertData)
     }
 
     const { error } = result

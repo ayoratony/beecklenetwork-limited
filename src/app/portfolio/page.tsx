@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { ArrowRight, ExternalLink, Github, Globe } from 'lucide-react'
+import { ArrowRight, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 import { supabase, type Project } from '@/lib/supabase'
 
@@ -56,8 +56,8 @@ async function getProjects() {
       return fallbackProjects as Project[]
     }
     return data as Project[]
-  } catch (e) {
-    console.warn('Fetch error, using fallback data')
+  } catch (error) {
+    console.warn('Fetch error, using fallback data', error)
     return fallbackProjects as Project[]
   }
 }
@@ -74,7 +74,7 @@ export default async function PortfolioPage() {
             Our <span className="holographic-text">Portfolio</span>
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-            Explore our latest projects and see how we've helped businesses transform through innovative technology solutions.
+            Explore our latest projects and see how we&apos;ve helped businesses transform through innovative technology solutions.
           </p>
         </div>
       </section>
@@ -87,7 +87,7 @@ export default async function PortfolioPage() {
           </h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-            {projects.filter(p => p.featured).map((project, index) => (
+            {projects.filter(p => p.featured).map((project) => (
               <Card key={project.id} className="bg-tech-midnight border-white/10 overflow-hidden group">
                 <div className="relative h-64 overflow-hidden">
                   <Image
@@ -144,7 +144,7 @@ export default async function PortfolioPage() {
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, index) => (
+            {projects.map((project) => (
               <Card key={project.id} className="bg-tech-midnight border-white/10 group">
                 <CardHeader>
                   <CardTitle className="text-xl text-white group-hover:text-tech-neon-cyan transition-colors">
@@ -191,7 +191,7 @@ export default async function PortfolioPage() {
             Ready to Start Your <span className="holographic-text">Project</span>?
           </h2>
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Let's discuss how we can help transform your business with our innovative technology solutions.
+            Let&apos;s discuss how we can help transform your business with our innovative technology solutions.
           </p>
           <Button size="lg" className="bg-tech-neon-cyan text-tech-deep-space hover:bg-tech-electric-blue hover:neon-glow transition-all text-lg px-8 py-3">
             Get Started Today

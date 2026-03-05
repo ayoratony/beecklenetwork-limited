@@ -20,7 +20,7 @@ export default function ServicesPage() {
       if (error) {
         console.error('Error fetching services:', error)
       } else {
-        setServices(data || [])
+        setServices((data as Service[]) || [])
       }
       setLoading(false)
     }
@@ -128,7 +128,7 @@ export default function ServicesPage() {
             Ready to Transform Your Business?
           </h2>
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto relative z-10">
-            Let's discuss how our services can help you achieve your goals.
+            Let&apos;s discuss how our services can help you achieve your goals.
           </p>
           <div className="relative z-10">
             <Link href="/contact">

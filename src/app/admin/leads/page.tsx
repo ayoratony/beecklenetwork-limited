@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase, type Lead } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { Search, Eye, Edit, Trash2, Plus, Mail, Phone, User, Calendar, MessageSquare, LogOut } from 'lucide-react'
+import { Search, Eye, Edit, Mail, User } from 'lucide-react'
 
 export default function AdminLeadsPage() {
   const router = useRouter()
@@ -24,25 +24,7 @@ export default function AdminLeadsPage() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [editForm, setEditForm] = useState({ status: '', notes: '' })
 
-  useEffect(() => {
-    checkSession()
-  }, [])
-
-  const checkSession = async () => {
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      router.push('/admin/login')
-    } else {
-      fetchLeads()
-    }
-  }
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    router.push('/admin/login')
-  }
-
-  const fetchLeads = async () => {
+  const fetchLeads = useCallback(async () => {
     try {
       setLoading(true)
       const { data, error } = await supabase
@@ -52,14 +34,27 @@ export default function AdminLeadsPage() {
       
       if (error) throw error
       
-      setLeads(data || [])
+      setLeads((data as Lead[]) || [])
     } catch (error) {
       console.error('Error fetching leads:', error)
       // No mock data fallback for admin - we want real data or error
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
+
+  const checkSession = useCallback(async () => {
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) {
+      router.push('/admin/login')
+    } else {
+      fetchLeads()
+    }
+  }, [router, fetchLeads])
+
+  useEffect(() => {
+    checkSession()
+  }, [checkSession])
 
   const filteredLeads = leads.filter(lead => {
     const matchesSearch = lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

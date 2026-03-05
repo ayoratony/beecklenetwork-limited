@@ -32,8 +32,12 @@ export default function AdminLoginPage() {
       if (data.session) {
         router.push('/admin/leads')
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to login')
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message || 'Failed to login')
+      } else {
+        setError('Failed to login')
+      }
     } finally {
       setLoading(false)
     }

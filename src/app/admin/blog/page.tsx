@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { supabase, BlogPost } from '@/lib/supabase'
+import { useState, useEffect, useCallback } from 'react'
+import { supabase, BlogPost, type Database } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -42,19 +42,14 @@ export default function BlogPage() {
     published_at: null
   })
 
-  useEffect(() => {
-    fetchPosts()
-    fetchUser()
-  }, [])
-
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (user) {
       setCurrentUserId(user.id)
     }
-  }
+  }, [])
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     setIsLoading(true)
     const { data, error } = await supabase
       .from('blog_posts')
@@ -64,10 +59,15 @@ export default function BlogPage() {
     if (error) {
       console.error('Error fetching posts:', error)
     } else {
-      setPosts(data || [])
+      setPosts((data as BlogPost[]) || [])
     }
     setIsLoading(false)
-  }
+  }, [])
+
+  useEffect(() => {
+    fetchPosts()
+    fetchUser()
+  }, [fetchPosts, fetchUser])
 
   const handleOpenDialog = (post?: BlogPost) => {
     if (post) {
@@ -93,23 +93,31 @@ export default function BlogPage() {
       return
     }
 
+    if (!currentPost.author_id && !currentUserId) {
+      alert('You must be logged in to save posts')
+      return
+    }
+
     setIsSaving(true)
     
-    const postData = {
-      ...currentPost,
-      // Ensure slug is URL friendly
-      slug: currentPost.slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
-      // Set author if not set
-      author_id: currentPost.author_id || currentUserId,
-      // Update published_at if publishing for the first time
-      published_at: currentPost.published && !currentPost.published_at 
-        ? new Date().toISOString() 
-        : currentPost.published_at
+    const postData: Database['public']['Tables']['blog_posts']['Insert'] = {
+      id: currentPost.id,
+      title: currentPost.title!,
+      slug: currentPost.slug!.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
+      content: currentPost.content!,
+      excerpt: currentPost.excerpt ?? '',
+      author_id: currentPost.author_id ?? currentUserId!,
+      published: currentPost.published ?? false,
+      published_at: currentPost.published && !currentPost.published_at
+        ? new Date().toISOString()
+        : currentPost.published_at ?? null,
+      cover_image: currentPost.cover_image ?? null,
+      created_at: currentPost.created_at
     }
 
     const { error } = await supabase
       .from('blog_posts')
-      .upsert(postData as any)
+      .upsert(postData)
 
     setIsSaving(false)
 

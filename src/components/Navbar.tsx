@@ -2,17 +2,8 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Menu, X, Code, Smartphone, Shield, Network, Zap, Cloud, Bot } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
-
-const services = [
-  { name: 'Website Development', href: '/services/website-development', icon: Code },
-  { name: 'Mobile Apps', href: '/services/mobile-app-development', icon: Smartphone },
-  { name: 'Security Systems', href: '/services/security-systems', icon: Shield },
-  { name: 'Network Design', href: '/services/network-design', icon: Network },
-  { name: 'Automation', href: '/services/system-automation', icon: Bot },
-  { name: 'Cloud Integration', href: '/services/cloud-integration', icon: Cloud },
-]
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)

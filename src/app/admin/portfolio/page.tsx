@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { supabase, Project } from '@/lib/supabase'
+import { useState, useEffect, useCallback } from 'react'
+import { supabase, Project, type Database } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -47,11 +47,7 @@ export default function PortfolioPage() {
   const [imagesInput, setImagesInput] = useState('')
   const [tagsInput, setTagsInput] = useState('')
 
-  useEffect(() => {
-    fetchProjects()
-  }, [])
-
-  const fetchProjects = async () => {
+  const fetchProjects = useCallback(async () => {
     setIsLoading(true)
     const { data, error } = await supabase
       .from('projects')
@@ -61,10 +57,14 @@ export default function PortfolioPage() {
     if (error) {
       console.error('Error fetching projects:', error)
     } else {
-      setProjects(data || [])
+      setProjects((data as Project[]) || [])
     }
     setIsLoading(false)
-  }
+  }, [])
+
+  useEffect(() => {
+    fetchProjects()
+  }, [fetchProjects])
 
   const handleOpenDialog = (project?: Project) => {
     if (project) {
@@ -97,18 +97,23 @@ export default function PortfolioPage() {
 
     setIsSaving(true)
     
-    const projectData = {
-      ...currentProject,
-      // Process arrays from string inputs
+    const projectData: Database['public']['Tables']['projects']['Insert'] = {
+      id: currentProject.id,
+      title: currentProject.title!,
+      slug: currentProject.slug!.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
+      description: currentProject.description!,
+      client: currentProject.client ?? '',
+      completion_date: currentProject.completion_date ?? new Date().toISOString().split('T')[0],
+      website_url: currentProject.website_url ?? null,
       images: imagesInput.split(',').map(s => s.trim()).filter(Boolean),
       tags: tagsInput.split(',').map(s => s.trim()).filter(Boolean),
-      // Ensure slug is URL friendly
-      slug: currentProject.slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')
+      featured: currentProject.featured ?? false,
+      created_at: currentProject.created_at
     }
 
     const { error } = await supabase
       .from('projects')
-      .upsert(projectData as any)
+      .upsert(projectData)
 
     setIsSaving(false)
 

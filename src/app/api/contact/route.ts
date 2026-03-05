@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabase, type Lead } from '@/lib/supabase'
 import { z } from 'zod'
 
 const contactSchema = z.object({
@@ -43,14 +43,16 @@ export async function POST(request: NextRequest) {
     
     // Here you could add email notifications, CRM integrations, etc.
     
+    const lead = data as Lead
+
     return NextResponse.json(
       { 
         success: true, 
         message: 'Contact form submitted successfully',
         data: {
-          id: data.id,
-          name: data.name,
-          email: data.email
+          id: lead.id,
+          name: lead.name,
+          email: lead.email
         }
       },
       { status: 201 }

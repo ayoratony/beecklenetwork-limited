@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { supabase, Service } from '@/lib/supabase'
+import { useState, useEffect, useCallback } from 'react'
+import { supabase, Service, type Database } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -18,7 +18,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -41,11 +40,7 @@ export default function ServicesPage() {
     icon_url: ''
   })
 
-  useEffect(() => {
-    fetchServices()
-  }, [])
-
-  const fetchServices = async () => {
+  const fetchServices = useCallback(async () => {
     setIsLoading(true)
     const { data, error } = await supabase
       .from('services')
@@ -55,10 +50,14 @@ export default function ServicesPage() {
     if (error) {
       console.error('Error fetching services:', error)
     } else {
-      setServices(data || [])
+      setServices((data as Service[]) || [])
     }
     setIsLoading(false)
-  }
+  }, [])
+
+  useEffect(() => {
+    fetchServices()
+  }, [fetchServices])
 
   const handleOpenDialog = (service?: Service) => {
     if (service) {
@@ -83,14 +82,19 @@ export default function ServicesPage() {
 
     setIsSaving(true)
     
-    const serviceData = {
-      ...currentService,
-      slug: currentService.slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')
+    const serviceData: Database['public']['Tables']['services']['Insert'] = {
+      id: currentService.id,
+      title: currentService.title!,
+      slug: currentService.slug!.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
+      description: currentService.description!,
+      category: currentService.category!,
+      icon_url: currentService.icon_url ?? null,
+      created_at: currentService.created_at
     }
 
     const { error } = await supabase
       .from('services')
-      .upsert(serviceData as any)
+      .upsert(serviceData)
 
     setIsSaving(false)
 

@@ -2,8 +2,13 @@
 
 import { useRef, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Stars, Text } from '@react-three/drei'
+import { OrbitControls, Stars } from '@react-three/drei'
 import * as THREE from 'three'
+
+const pseudoRandom = (seed: number) => {
+  const x = Math.sin(seed) * 10000
+  return x - Math.floor(x)
+}
 
 function TechSphere() {
   const meshRef = useRef<THREE.Mesh>(null!)
@@ -47,9 +52,10 @@ function TechNodes() {
   const nodes = useMemo(() => {
     const nodePositions = []
     for (let i = 0; i < 20; i++) {
-      const radius = 4 + Math.random() * 2
-      const theta = Math.random() * Math.PI * 2
-      const phi = Math.random() * Math.PI
+      const base = i * 13.37
+      const radius = 4 + pseudoRandom(base + 1) * 2
+      const theta = pseudoRandom(base + 2) * Math.PI * 2
+      const phi = pseudoRandom(base + 3) * Math.PI
       
       nodePositions.push({
         position: [
@@ -57,7 +63,7 @@ function TechNodes() {
           radius * Math.sin(phi) * Math.sin(theta),
           radius * Math.cos(phi)
         ],
-        scale: 0.1 + Math.random() * 0.1
+        scale: 0.1 + pseudoRandom(base + 4) * 0.1
       })
     }
     return nodePositions
@@ -95,9 +101,10 @@ function Connections() {
     
     // Generate node positions for connections
     for (let i = 0; i < 12; i++) {
-      const radius = 3 + Math.random() * 2
+      const base = i * 9.73
+      const radius = 3 + pseudoRandom(base + 1) * 2
       const theta = (i / 12) * Math.PI * 2
-      const phi = Math.random() * Math.PI * 0.5
+      const phi = pseudoRandom(base + 2) * Math.PI * 0.5
       
       nodePositions.push(new THREE.Vector3(
         radius * Math.sin(phi) * Math.cos(theta),
@@ -128,14 +135,14 @@ function Connections() {
   return (
     <group ref={linesRef}>
       {connections.map((connection, index) => (
-        <line key={index} geometry={connection.geometry}>
+        <lineSegments key={index} geometry={connection.geometry}>
           <lineBasicMaterial
             color="#2563EB"
             transparent
             opacity={connection.opacity * 1.5}
             linewidth={2}
           />
-        </line>
+        </lineSegments>
       ))}
     </group>
   )
