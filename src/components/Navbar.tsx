@@ -22,11 +22,19 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="text-2xl font-orbitron font-bold holographic-text">
+          <Link href="/" className="flex items-center space-x-2 group">
+            <div 
+              className="text-2xl font-orbitron font-bold text-3d-purple cyber-logo-text"
+              data-text="BEECKLE"
+            >
               BEECKLE
             </div>
-            <span className="text-tech-neon-cyan font-semibold">NETWORK</span>
+            <span 
+              className="text-2xl font-orbitron font-bold text-3d-cyan cyber-logo-text"
+              data-text="NETWORK"
+            >
+              NETWORK
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -46,7 +54,7 @@ export default function Navbar() {
             <Link href="/contact" className="text-gray-300 hover:text-tech-neon-cyan transition-colors">
               Contact
             </Link>
-            <Button className="bg-tech-neon-cyan text-tech-deep-space hover:bg-tech-electric-blue hover:neon-glow transition-all">
+            <Button className="bg-tech-neon-cyan text-tech-deep-space font-orbitron font-bold tracking-wider clip-path-polygon hover:bg-white hover:text-tech-neon-cyan transition-all duration-300 hover:scale-105 tech-button-glow">
               Get Started
             </Button>
           </div>
@@ -81,7 +89,7 @@ export default function Navbar() {
               <Link href="/contact" className="text-gray-300 hover:text-tech-neon-cyan transition-colors">
                 Contact
               </Link>
-              <Button className="bg-tech-neon-cyan text-tech-deep-space hover:bg-tech-electric-blue hover:neon-glow transition-all">
+              <Button className="bg-tech-neon-cyan text-tech-deep-space font-orbitron font-bold tracking-wider clip-path-polygon hover:bg-white hover:text-tech-neon-cyan transition-all duration-300 hover:scale-105 tech-button-glow">
                 Get Started
               </Button>
             </div>
