@@ -228,6 +228,22 @@
   .corner-tr { top: 0; right: 0; border-left: none; border-bottom: none; }
   .corner-bl { bottom: 0; left: 0; border-right: none; border-top: none; }
   .corner-br { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+  .clip-path-polygon {
+    clip-path: polygon(
+      20px 0, 
+      100% 0, 
+      100% calc(100% - 20px), 
+      calc(100% - 20px) 100%, 
+      0 100%, 
+      0 20px
+    );
+  }
+
+  .tech-button-glow:hover {
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  }
 }
 
 :root {

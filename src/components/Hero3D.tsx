@@ -203,11 +203,12 @@ export default function Hero3D() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center md:justify-start pt-4">
-              <button className="px-8 py-4 bg-tech-neon-cyan text-tech-deep-space font-orbitron font-bold rounded-sm hover:neon-glow hover:scale-105 transition-all duration-300 tracking-widest clip-path-polygon">
-                EXPLORE SERVICES
+              <button className="relative px-8 py-4 bg-tech-neon-cyan text-tech-deep-space font-orbitron font-bold text-lg tracking-widest clip-path-polygon hover:bg-white hover:text-tech-neon-cyan transition-all duration-300 hover:scale-105 tech-button-glow group overflow-hidden">
+                <span className="relative z-10">EXPLORE SERVICES</span>
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
               </button>
               
-              <button className="px-8 py-4 border border-tech-neon-cyan/50 text-tech-neon-cyan font-orbitron font-bold rounded-sm glassmorphism hover:bg-tech-neon-cyan/10 hover:border-tech-neon-cyan hover:scale-105 transition-all duration-300 tracking-widest">
+              <button className="relative px-8 py-4 bg-transparent text-tech-neon-cyan font-orbitron font-bold text-lg tracking-widest clip-path-polygon border border-tech-neon-cyan/50 hover:border-tech-neon-cyan hover:bg-tech-neon-cyan/10 transition-all duration-300 hover:scale-105 tech-button-glow backdrop-blur-sm">
                 CONTACT US
               </button>
             </div>
