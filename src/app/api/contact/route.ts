@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase, type Lead } from '@/lib/supabase'
+import { getSupabaseClient, type Lead } from '@/lib/supabase'
 import { z } from 'zod'
 
 const contactSchema = z.object({
@@ -12,6 +12,7 @@ const contactSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = getSupabaseClient()
     const body = await request.json()
     
     // Validate the input data
@@ -76,6 +77,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const supabase = getSupabaseClient()
     // Only allow authenticated users to view leads
     const authHeader = request.headers.get('authorization')
     

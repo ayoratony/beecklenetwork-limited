@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { LayoutDashboard, Users, FileText, Briefcase, Settings, Menu, X, LogOut, Layers, Info } from 'lucide-react'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 
 const sidebarItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/admin' },
@@ -25,6 +25,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     const checkSession = async () => {
+      const supabase = getSupabaseClient()
       // Skip check for login page
       if (pathname === '/admin/login') {
         setIsLoading(false)
@@ -43,6 +44,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [pathname, router])
 
   const handleSignOut = async () => {
+    const supabase = getSupabaseClient()
     await supabase.auth.signOut()
     router.push('/admin/login')
   }

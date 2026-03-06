@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { supabase, Service, type Database } from '@/lib/supabase'
+import { getSupabaseClient, Service, type Database } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -41,6 +41,7 @@ export default function ServicesPage() {
   })
 
   const fetchServices = useCallback(async () => {
+    const supabase = getSupabaseClient()
     setIsLoading(true)
     const { data, error } = await supabase
       .from('services')
@@ -75,6 +76,7 @@ export default function ServicesPage() {
   }
 
   const handleSave = async () => {
+    const supabase = getSupabaseClient()
     if (!currentService.title || !currentService.slug || !currentService.description || !currentService.category) {
       alert('Please fill in all required fields')
       return
@@ -108,6 +110,7 @@ export default function ServicesPage() {
   }
 
   const handleDelete = async (id: string) => {
+    const supabase = getSupabaseClient()
     if (!confirm('Are you sure you want to delete this service?')) return
 
     const { error } = await supabase

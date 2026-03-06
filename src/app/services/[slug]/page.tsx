@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { supabase, Service } from '@/lib/supabase'
+import { getSupabaseClient, Service } from '@/lib/supabase'
 import { Loader2, ArrowLeft, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -16,6 +16,7 @@ export default function ServiceDetailPage() {
 
   useEffect(() => {
     async function fetchService() {
+      const supabase = getSupabaseClient()
       if (!slug) return
 
       const { data, error } = await supabase

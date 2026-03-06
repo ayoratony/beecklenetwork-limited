@@ -1,10 +1,22 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+let cachedClient: ReturnType<typeof createClient<Database>> | null = null
 
-// Client-side client (for use in components)
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
+export function getSupabaseClient() {
+  if (cachedClient) {
+    return cachedClient
+  }
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase public environment variables are required')
+  }
+
+  cachedClient = createClient<Database>(supabaseUrl, supabaseAnonKey)
+  return cachedClient
+}
 
 export type Database = {
   public: {

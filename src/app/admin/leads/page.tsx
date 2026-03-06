@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase, type Lead } from '@/lib/supabase'
+import { getSupabaseClient, type Lead } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -26,6 +26,7 @@ export default function AdminLeadsPage() {
 
   const fetchLeads = useCallback(async () => {
     try {
+      const supabase = getSupabaseClient()
       setLoading(true)
       const { data, error } = await supabase
         .from('leads')
@@ -44,6 +45,7 @@ export default function AdminLeadsPage() {
   }, [])
 
   const checkSession = useCallback(async () => {
+    const supabase = getSupabaseClient()
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) {
       router.push('/admin/login')

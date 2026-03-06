@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { supabase, Project, type Database } from '@/lib/supabase'
+import { getSupabaseClient, Project, type Database } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -48,6 +48,7 @@ export default function PortfolioPage() {
   const [tagsInput, setTagsInput] = useState('')
 
   const fetchProjects = useCallback(async () => {
+    const supabase = getSupabaseClient()
     setIsLoading(true)
     const { data, error } = await supabase
       .from('projects')
@@ -90,6 +91,7 @@ export default function PortfolioPage() {
   }
 
   const handleSave = async () => {
+    const supabase = getSupabaseClient()
     if (!currentProject.title || !currentProject.slug || !currentProject.description) {
       alert('Please fill in required fields (Title, Slug, Description)')
       return
@@ -127,6 +129,7 @@ export default function PortfolioPage() {
   }
 
   const handleDelete = async (id: string) => {
+    const supabase = getSupabaseClient()
     if (!confirm('Are you sure you want to delete this project?')) return
 
     const { error } = await supabase

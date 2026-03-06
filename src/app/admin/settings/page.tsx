@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { supabase, CompanyInfo, type Database } from '@/lib/supabase'
+import { getSupabaseClient, CompanyInfo, type Database } from '@/lib/supabase'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -22,6 +22,7 @@ export default function SettingsPage() {
   })
 
   const fetchInfo = useCallback(async () => {
+    const supabase = getSupabaseClient()
     setIsLoading(true)
     const { data, error } = await supabase
       .from('company_info')
@@ -51,6 +52,7 @@ export default function SettingsPage() {
   }, [fetchInfo])
 
   const handleSave = async () => {
+    const supabase = getSupabaseClient()
     setIsSaving(true)
     
     const updates: Database['public']['Tables']['company_info']['Update'] = {

@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { ArrowRight, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
-import { supabase, type Project } from '@/lib/supabase'
+import { getSupabaseClient, type Project } from '@/lib/supabase'
 
 const fallbackProjects: Partial<Project>[] = [
   {
@@ -46,6 +46,7 @@ const fallbackProjects: Partial<Project>[] = [
 
 async function getProjects() {
   try {
+    const supabase = getSupabaseClient()
     const { data, error } = await supabase
       .from('projects')
       .select('*')

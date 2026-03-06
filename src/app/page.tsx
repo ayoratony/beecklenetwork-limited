@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Code, Smartphone, Shield, Network, Bot, Cloud, ArrowRight, Zap, LucideIcon } from 'lucide-react'
 import Link from 'next/link'
 import Hero3DWrapper from '@/components/Hero3DWrapper'
-import { supabase, type Service } from '@/lib/supabase'
+import { getSupabaseClient, type Service } from '@/lib/supabase'
 
 const iconMap: Record<string, LucideIcon> = {
   'Web Dev': Code,
@@ -77,6 +77,7 @@ const fallbackServices: Partial<Service>[] = [
 
 async function getServices() {
   try {
+    const supabase = getSupabaseClient()
     const { data, error } = await supabase
       .from('services')
       .select('*')

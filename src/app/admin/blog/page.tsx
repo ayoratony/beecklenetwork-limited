@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { supabase, BlogPost, type Database } from '@/lib/supabase'
+import { getSupabaseClient, BlogPost, type Database } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -43,6 +43,7 @@ export default function BlogPage() {
   })
 
   const fetchUser = useCallback(async () => {
+    const supabase = getSupabaseClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (user) {
       setCurrentUserId(user.id)
@@ -50,6 +51,7 @@ export default function BlogPage() {
   }, [])
 
   const fetchPosts = useCallback(async () => {
+    const supabase = getSupabaseClient()
     setIsLoading(true)
     const { data, error } = await supabase
       .from('blog_posts')
@@ -88,6 +90,7 @@ export default function BlogPage() {
   }
 
   const handleSave = async () => {
+    const supabase = getSupabaseClient()
     if (!currentPost.title || !currentPost.slug || !currentPost.content) {
       alert('Please fill in required fields (Title, Slug, Content)')
       return
@@ -131,6 +134,7 @@ export default function BlogPage() {
   }
 
   const handleDelete = async (id: string) => {
+    const supabase = getSupabaseClient()
     if (!confirm('Are you sure you want to delete this post?')) return
 
     const { error } = await supabase

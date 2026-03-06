@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { supabase, CompanyInfo, type Database } from '@/lib/supabase'
+import { getSupabaseClient, CompanyInfo, type Database } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -17,6 +17,7 @@ export default function AdminAboutPage() {
   const [tableMissing, setTableMissing] = useState(false)
 
   const fetchInfo = useCallback(async () => {
+    const supabase = getSupabaseClient()
     setIsLoading(true)
     const { data, error } = await supabase
       .from('company_info')
@@ -44,6 +45,7 @@ export default function AdminAboutPage() {
   }, [fetchInfo])
 
   const handleSave = async () => {
+    const supabase = getSupabaseClient()
     setIsSaving(true)
     
     const updates: Database['public']['Tables']['company_info']['Update'] = {

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase, Service } from '@/lib/supabase'
+import { getSupabaseClient, Service } from '@/lib/supabase'
 import { Loader2, ArrowRight, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -13,6 +13,7 @@ export default function ServicesPage() {
 
   useEffect(() => {
     async function fetchServices() {
+      const supabase = getSupabaseClient()
       const { data, error } = await supabase
         .from('services')
         .select('*')

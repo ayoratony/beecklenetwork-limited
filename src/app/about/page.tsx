@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase, CompanyInfo } from '@/lib/supabase'
+import { getSupabaseClient, CompanyInfo } from '@/lib/supabase'
 import { Loader2 } from 'lucide-react'
 
 export default function AboutPage() {
@@ -10,6 +10,7 @@ export default function AboutPage() {
 
   useEffect(() => {
     async function fetchInfo() {
+      const supabase = getSupabaseClient()
       const { data } = await supabase.from('company_info').select('*').single()
       setInfo(data as CompanyInfo | null)
       setLoading(false)

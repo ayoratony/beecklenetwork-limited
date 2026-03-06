@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Users, Briefcase, FileText, Layers, TrendingUp } from 'lucide-react'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -13,8 +13,8 @@ export default function AdminDashboard() {
     posts: 0
   })
   const [loading, setLoading] = useState(true)
-
   const fetchStats = useCallback(async () => {
+    const supabase = getSupabaseClient()
     setLoading(true)
     
     // Fetch counts in parallel
