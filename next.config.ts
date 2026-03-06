@@ -1,8 +1,13 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 
 const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
+  distDir: '.next-build',
+  turbopack: {
+    root: path.resolve(process.cwd()),
+  },
   
   // Security headers
   async headers() {
@@ -33,7 +38,16 @@ const nextConfig: NextConfig = {
   
   // Image domains for Next.js Image component
   images: {
-    domains: ['localhost', 'beecklenetwork.com'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+      {
+        protocol: 'https',
+        hostname: 'beecklenetwork.com',
+      },
+    ],
     formats: ['image/webp', 'image/avif']
   },
   

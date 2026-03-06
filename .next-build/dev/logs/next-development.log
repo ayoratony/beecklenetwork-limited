@@ -1,0 +1,4 @@
+[00:00:02.295] Server  LOG      ✓ Ready in 1614ms
+[00:06:35.304] Server  LOG      ○ Compiling / ...
+[00:06:40.019] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:06:40.625] Browser WARN    THREE.THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.

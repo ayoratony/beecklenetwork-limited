@@ -1,0 +1,11 @@
+var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/_global-error/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__9be9ed2a._.js")
+R.c("server/chunks/ssr/beeckle-website_9fef1113._.js")
+R.c("server/chunks/ssr/846f5_next_dist_7a094609._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__d88b12e1._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__28814e6e._.js")
+R.c("server/chunks/ssr/846f5_next_dist_28a3088b._.js")
+R.c("server/chunks/ssr/beeckle-website_src_app_426fb134._.js")
+R.c("server/chunks/ssr/beeckle-website__next-internal_server_app__global-error_page_actions_82d71da0.js")
+R.m(63284)
+module.exports=R.m(63284).exports
