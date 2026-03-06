@@ -35,7 +35,7 @@ const updateLeadSchema = z.object({
 
 export async function PUT(
   request: NextRequest,
-  context: { params?: Promise<{ id: string }> }
+  context: { params: Promise<Record<string, string | string[] | undefined>> }
 ) {
   try {
     const params = await context.params
@@ -43,6 +43,12 @@ export async function PUT(
     if (!id) {
       return NextResponse.json(
         { error: 'Lead id is required' },
+        { status: 400 }
+      )
+    }
+    if (Array.isArray(id)) {
+      return NextResponse.json(
+        { error: 'Lead id must be a single value' },
         { status: 400 }
       )
     }
@@ -97,7 +103,7 @@ export async function PUT(
 // Get lead details
 export async function GET(
   request: NextRequest,
-  context: { params?: Promise<{ id: string }> }
+  context: { params: Promise<Record<string, string | string[] | undefined>> }
 ) {
   try {
     const params = await context.params
@@ -105,6 +111,12 @@ export async function GET(
     if (!id) {
       return NextResponse.json(
         { error: 'Lead id is required' },
+        { status: 400 }
+      )
+    }
+    if (Array.isArray(id)) {
+      return NextResponse.json(
+        { error: 'Lead id must be a single value' },
         { status: 400 }
       )
     }
