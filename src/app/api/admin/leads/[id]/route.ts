@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase-admin'
+import { getSupabaseAdmin } from '@/lib/supabase-admin'
 import { z } from 'zod'
 
 // Admin authentication middleware
 async function isAdmin(request: NextRequest): Promise<boolean> {
+  const supabaseAdmin = getSupabaseAdmin()
   const authHeader = request.headers.get('authorization')
   
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -38,6 +39,7 @@ export async function PUT(
   context: { params: Promise<Record<string, string | string[] | undefined>> }
 ) {
   try {
+    const supabaseAdmin = getSupabaseAdmin()
     const params = await context.params
     const id = params?.id
     if (!id) {
@@ -106,6 +108,7 @@ export async function GET(
   context: { params: Promise<Record<string, string | string[] | undefined>> }
 ) {
   try {
+    const supabaseAdmin = getSupabaseAdmin()
     const params = await context.params
     const id = params?.id
     if (!id) {
