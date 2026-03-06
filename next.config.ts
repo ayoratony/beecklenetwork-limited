@@ -4,7 +4,6 @@ import path from "node:path";
 const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
-  distDir: '.next-build',
   turbopack: {
     root: path.resolve(process.cwd()),
   },

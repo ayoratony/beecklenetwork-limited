@@ -23,7 +23,8 @@ REVALIDATION_SECRET=your_revalidation_secret_key
 2. **Configure Build Settings**
    - Framework: Next.js
    - Build Command: `npm run build`
-   - Output Directory: `.next`
+   - Root Directory: `beeckle-website`
+   - Output Directory: leave empty (default)
    - Install Command: `npm install --legacy-peer-deps`
 
 3. **Add Environment Variables**
